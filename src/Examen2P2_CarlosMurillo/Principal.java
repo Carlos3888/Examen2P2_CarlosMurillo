@@ -25,8 +25,15 @@ public class Principal extends javax.swing.JFrame {
     
     ArrayList<Carro> carros = new ArrayList();
     
+    DefaultTableModel modelod1;
+    DefaultTableModel modelod2;
+    
     public Principal() {
+        
         initComponents();
+        
+        this.modelod1 = (DefaultTableModel) tabla_carros.getModel();
+        this.modelod2 = (DefaultTableModel) tabla_carros2.getModel();
         
         p_em_crear.setVisible(false);
         p_em_eliminar.setVisible(false);
@@ -70,7 +77,8 @@ public class Principal extends javax.swing.JFrame {
         emp2.cargarArchivo();
         carros = emp2.getLista();
         
-        DefaultTableModel modelo1 = (DefaultTableModel) tabla_carros.getModel();
+        tabla_carros.setModel(modelod1);
+        DefaultTableModel modelo1 = modelod1;
         for (int i = 0; i < carros.size(); i++) {
             String marca = carros.get(i).getMarca();
             String modelo = carros.get(i).getModelo();
@@ -82,14 +90,21 @@ public class Principal extends javax.swing.JFrame {
         }
         tabla_carros.setModel(modelo1);
         
-        DefaultTableModel modelo2 = (DefaultTableModel) tabla_carros2.getModel();
+        tabla_carros2.removeAll();
+        DefaultTableModel modelo2 = modelod2;
         DefaultComboBoxModel modelo3 = new DefaultComboBoxModel();
         for (int i = 0; i < carros.size(); i++) {
             int id = i+1;
             String marca = carros.get(i).getMarca();
-            Object [] newrow = {id,marca};
-            modelo2.addRow(newrow);
-            modelo3.addElement(id);
+            String estad = carros.get(i).getEstado();
+            if(estad.equals("Reparado")){
+                
+            }else{
+                Object [] newrow = {id,marca};
+                modelo2.addRow(newrow);
+                modelo3.addElement(id);
+            }
+            
         }
         combo_carro.setModel(modelo3);
         tabla_carros2.setModel(modelo2);
@@ -909,6 +924,8 @@ public class Principal extends javax.swing.JFrame {
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
         estado_final.setText("");
         
+        int id = Integer.parseInt(combo_carro.getSelectedItem().toString());
+        
         String nombre = combo_empleados.getSelectedItem().toString();
         
         Admin_Empleados emp = new Admin_Empleados("./archivos/Empleados/"+nombre+".emp");
@@ -918,9 +935,10 @@ public class Principal extends javax.swing.JFrame {
         System.out.println(au_rep);
         
         
-        Hilo hilo = new Hilo(barra, 5000, au_rep, estado_final, nombre);
+        Hilo hilo = new Hilo(barra, 5000, au_rep, estado_final, nombre, id);
         
         hilo.start();
+        cargarcarros();
     }//GEN-LAST:event_jButton5MouseClicked
 
     /**
