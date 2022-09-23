@@ -25,15 +25,13 @@ public class Principal extends javax.swing.JFrame {
     
     ArrayList<Carro> carros = new ArrayList();
     
-    DefaultTableModel modelod1;
-    DefaultTableModel modelod2;
-    
+
     public Principal() {
         
         initComponents();
-        
-        this.modelod1 = (DefaultTableModel) tabla_carros.getModel();
-        this.modelod2 = (DefaultTableModel) tabla_carros2.getModel();
+        boton.setOpaque(true);
+        boton.setContentAreaFilled(false);
+        boton.setBorderPainted(false);
         
         p_em_crear.setVisible(false);
         p_em_eliminar.setVisible(false);
@@ -77,8 +75,30 @@ public class Principal extends javax.swing.JFrame {
         emp2.cargarArchivo();
         carros = emp2.getLista();
         
-        tabla_carros.setModel(modelod1);
-        DefaultTableModel modelo1 = modelod1;
+        tabla_carros.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Marca", "Modelo", "Año de fabricacion", "Costo de reparacion", "Estado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        DefaultTableModel modelo1 = (DefaultTableModel) tabla_carros.getModel();
         for (int i = 0; i < carros.size(); i++) {
             String marca = carros.get(i).getMarca();
             String modelo = carros.get(i).getModelo();
@@ -90,8 +110,30 @@ public class Principal extends javax.swing.JFrame {
         }
         tabla_carros.setModel(modelo1);
         
-        tabla_carros2.removeAll();
-        DefaultTableModel modelo2 = modelod2;
+        tabla_carros2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Marca"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        DefaultTableModel modelo2 = (DefaultTableModel) tabla_carros2.getModel();
         DefaultComboBoxModel modelo3 = new DefaultComboBoxModel();
         for (int i = 0; i < carros.size(); i++) {
             int id = i+1;
@@ -179,6 +221,7 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_carros2 = new javax.swing.JTable();
         barra = new javax.swing.JProgressBar();
+        boton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -666,22 +709,34 @@ public class Principal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabla_carros2);
 
+        boton.setOpaque(false);
+        boton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel_simulacionLayout = new javax.swing.GroupLayout(panel_simulacion);
         panel_simulacion.setLayout(panel_simulacionLayout);
         panel_simulacionLayout.setHorizontalGroup(
             panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_simulacionLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_simulacionLayout.createSequentialGroup()
-                        .addComponent(jButton5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(43, 43, 43)
+                        .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panel_simulacionLayout.createSequentialGroup()
+                                .addComponent(jButton5)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(panel_simulacionLayout.createSequentialGroup()
+                                .addComponent(combo_empleado, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(combo_carro, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(barra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(panel_simulacionLayout.createSequentialGroup()
-                        .addComponent(combo_empleado, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(combo_carro, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(barra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(boton)))
                 .addContainerGap(305, Short.MAX_VALUE))
             .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_simulacionLayout.createSequentialGroup()
@@ -702,7 +757,9 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                .addComponent(boton)
+                .addContainerGap())
             .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_simulacionLayout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -935,11 +992,15 @@ public class Principal extends javax.swing.JFrame {
         System.out.println(au_rep);
         
         
-        Hilo hilo = new Hilo(barra, 5000, au_rep, estado_final, nombre, id);
+        Hilo hilo = new Hilo(barra, 5000, au_rep, estado_final, nombre, id, boton);
         
         hilo.start();
         cargarcarros();
     }//GEN-LAST:event_jButton5MouseClicked
+
+    private void botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActionPerformed
+        cargarcarros();
+    }//GEN-LAST:event_botonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -978,6 +1039,7 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar barra;
+    private javax.swing.JButton boton;
     private javax.swing.JComboBox<String> combo_carro;
     private javax.swing.JComboBox<String> combo_empleado;
     private javax.swing.JComboBox<String> combo_empleados;

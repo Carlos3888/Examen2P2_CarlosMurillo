@@ -2,6 +2,7 @@ package Examen2P2_CarlosMurillo;
 
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
@@ -15,8 +16,9 @@ public class Hilo extends Thread{
     private JLabel repa;
     String nombre;
     int id;
+    JButton boton;
 
-    public Hilo(JProgressBar progBar, int costo, int au_repa, JLabel repa, String nombre, int id) {
+    public Hilo(JProgressBar progBar, int costo, int au_repa, JLabel repa, String nombre, int id, JButton boton) {
         this.progBar = progBar;
         this.costo = costo;
         desi = true;
@@ -26,6 +28,7 @@ public class Hilo extends Thread{
         this.repa = repa;
         this.nombre = nombre;
         this.id = id;
+        this.boton = boton;
     }
     
     @Override
@@ -92,10 +95,12 @@ public class Hilo extends Thread{
                 carros.get(id-1).setEstado("Reparado");
                 car.setLista(carros);
                 car.escribirArchivo();
+                
             }
-            
+            boton.doClick();
         }catch(Exception e){
             
         }
     }
+    
 }
