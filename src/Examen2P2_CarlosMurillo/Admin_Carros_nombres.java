@@ -8,20 +8,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class Admin_Empleados {
-    Empleado empleado = new Empleado();
+public class Admin_Carros_nombres {
+    ArrayList<String> lista;
     private File archivo = null;
 
-    public Admin_Empleados(String path) {
+    public Admin_Carros_nombres(String path) {
         archivo = new File(path);
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public ArrayList<String> getLista() {
+        return lista;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
+    public void setLista(ArrayList<String> lista) {
+        this.lista = lista;
     }
 
     public File getArchivo() {
@@ -32,14 +32,21 @@ public class Admin_Empleados {
         this.archivo = archivo;
     }
     
+    public void setNombre(String nom){
+        this.lista.add(nom);
+    }
     
     public void cargarArchivo() {
         try {            
+            lista = new ArrayList();
+            String nom;
             if (archivo.exists()) {
                 FileInputStream entrada = new FileInputStream(archivo);
                 ObjectInputStream objeto = new ObjectInputStream(entrada);
                 try {
-                    empleado = (Empleado) objeto.readObject();
+                    while ((nom = (String) objeto.readObject()) != null) {
+                        lista.add(nom);
+                    }
                 } catch (EOFException e) {
                 }
                 objeto.close();
@@ -56,10 +63,8 @@ public class Admin_Empleados {
         try {
             fw = new FileOutputStream(archivo);
             bw = new ObjectOutputStream(fw);
-            try{
-                bw.writeObject(empleado);
-            }catch(Exception e){
-                
+            for (String nom : lista) {
+                bw.writeObject(nom);
             }
             bw.flush();
         } catch (Exception ex) {

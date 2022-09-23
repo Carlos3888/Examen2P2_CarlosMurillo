@@ -6,6 +6,7 @@
 package Examen2P2_CarlosMurillo;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 
@@ -32,14 +33,23 @@ public class Principal extends javax.swing.JFrame {
         
         
         
+        cargarempleados();
         
         
+        
+    }
+    
+    public void cargarempleados(){
+        String archivo2 = "./archivos/Empleados/Nombres.lis";
+        Admin_nombres emp2 = new Admin_nombres(archivo2);
+        emp2.cargarArchivo();
+        nombres = emp2.getLista();
         
         DefaultComboBoxModel modelo1 = new DefaultComboBoxModel();
         for (int i = 0; i < nombres.size(); i++) {
             String archivo = "./archivos/Empleados/";
             String nombre = nombres.get(i);
-            archivo+=archivo+nombre+".emp";
+            archivo+=nombre+".emp";
             Admin_Empleados emp = new Admin_Empleados(archivo);
             emp.cargarArchivo();
             Empleado empleado = emp.getEmpleado();
@@ -174,6 +184,11 @@ public class Principal extends javax.swing.JFrame {
         panel_empleados.add(p_em_crear, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 560, 330));
 
         jButton1.setText("Eliminar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout p_em_eliminarLayout = new javax.swing.GroupLayout(p_em_eliminar);
         p_em_eliminar.setLayout(p_em_eliminarLayout);
@@ -664,7 +679,7 @@ public class Principal extends javax.swing.JFrame {
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         String archivo = "./archivos/Empleados/";
         String nombre = t_emp_nom.getText();
-        archivo+=archivo+nombre+".emp";
+        archivo+=nombre+".emp";
         Admin_Empleados emp = new Admin_Empleados(archivo);
         
         
@@ -677,20 +692,44 @@ public class Principal extends javax.swing.JFrame {
         emp.setEmpleado(empleado);
         emp.escribirArchivo();
         
-        nombres.add(nombre);
         
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-        ArrayList<Empleado> lista = new ArrayList();
-        lista = emp.getLista();
-        for (int i = 0; i < lista.size(); i++) {
-            modelo.addElement(lista.get(i).getNombre());
-        }
-        combo_empleados.setModel(modelo);
+        
+        String archivo2 = "./archivos/Empleados/Nombres.lis";
+        Admin_nombres emp2 = new Admin_nombres(archivo2);
+        emp2.cargarArchivo();
+        nombres = emp2.getLista();
+        nombres.add(nombre);
+        emp2.setLista(nombres);
+        emp2.escribirArchivo();
+        
+        cargarempleados();
         
         t_emp_nom.setText("");
         t_emp_edad.setValue(0);
         t_emp_identidad.setText("");
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        String nombre = combo_empleados.getSelectedItem().toString();
+        
+        File file = new File("./archivos/Empleados/"+nombre+".emp");
+        file.delete();
+        
+        String archivo2 = "./archivos/Empleados/Nombres.lis";
+        Admin_nombres emp2 = new Admin_nombres(archivo2);
+        emp2.cargarArchivo();
+        nombres = emp2.getLista();
+        for (int i = 0; i < nombres.size(); i++) {
+            String nombre2 = nombres.get(i);
+            if(nombre.equals(nombre2)){
+                nombres.remove(i);
+            }
+        }
+        emp2.setLista(nombres);
+        emp2.escribirArchivo();
+        
+        cargarempleados();
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
