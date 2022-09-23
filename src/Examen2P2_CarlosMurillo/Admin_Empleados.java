@@ -9,19 +9,19 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Admin_Empleados {
-    ArrayList<Empleado> lista;
+    Empleado empleado = new Empleado();
     private File archivo = null;
 
     public Admin_Empleados(String path) {
         archivo = new File(path);
     }
 
-    public ArrayList<Empleado> getLista() {
-        return lista;
+    public Empleado getEmpleado() {
+        return empleado;
     }
 
-    public void setLista(ArrayList<Empleado> lista) {
-        this.lista = lista;
+    public void setUniverso(Empleado empleado) {
+        this.empleado = empleado;
     }
 
     public File getArchivo() {
@@ -32,21 +32,14 @@ public class Admin_Empleados {
         this.archivo = archivo;
     }
     
-    public void setUniverso(Empleado emp){
-        this.lista.add(emp);
-    }
     
     public void cargarArchivo() {
         try {            
-            lista = new ArrayList();
-            Empleado emp;
             if (archivo.exists()) {
                 FileInputStream entrada = new FileInputStream(archivo);
                 ObjectInputStream objeto = new ObjectInputStream(entrada);
                 try {
-                    while ((emp = (Empleado) objeto.readObject()) != null) {
-                        lista.add(emp);
-                    }
+                    empleado = (Empleado) objeto.readObject();
                 } catch (EOFException e) {
                 }
                 objeto.close();
@@ -63,8 +56,10 @@ public class Admin_Empleados {
         try {
             fw = new FileOutputStream(archivo);
             bw = new ObjectOutputStream(fw);
-            for (Empleado emp : lista) {
-                bw.writeObject(emp);
+            try{
+                bw.writeObject(empleado);
+            }catch(Exception e){
+                
             }
             bw.flush();
         } catch (Exception ex) {
