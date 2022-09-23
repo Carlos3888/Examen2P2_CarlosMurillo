@@ -32,7 +32,7 @@ public class Admin_Carros {
         this.archivo = archivo;
     }
     
-    public void setUniverso(Carro car){
+    public void setCarro(Carro car){
         this.lista.add(car);
     }
     

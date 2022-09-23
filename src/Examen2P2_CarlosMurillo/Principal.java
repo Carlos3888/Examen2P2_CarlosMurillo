@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,6 +22,8 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     ArrayList<String> nombres = new ArrayList();
+    
+    ArrayList<Carro> carros = new ArrayList();
     
     public Principal() {
         initComponents();
@@ -34,6 +38,7 @@ public class Principal extends javax.swing.JFrame {
         
         
         cargarempleados();
+        cargarcarros();
         
         
         
@@ -56,6 +61,25 @@ public class Principal extends javax.swing.JFrame {
             modelo1.addElement(empleado.getNombre());
         }
         combo_empleados.setModel(modelo1);
+    }
+    
+    public void cargarcarros(){
+        String archivo2 = "./archivos/Carros.car";
+        Admin_Carros emp2 = new Admin_Carros(archivo2);
+        emp2.cargarArchivo();
+        carros = emp2.getLista();
+        
+        DefaultTableModel modelo1 = (DefaultTableModel) tabla_carros.getModel();
+        for (int i = 0; i < carros.size(); i++) {
+            String marca = carros.get(i).getMarca();
+            String modelo = carros.get(i).getModelo();
+            String estado = carros.get(i).getEstado();
+            int año = carros.get(i).getAño();
+            int costo = carros.get(i).getCosto();
+            Object [] newrow = {marca,modelo,año,costo,estado};
+            modelo1.addRow(newrow);
+        }
+        tabla_carros.setModel(modelo1);
     }
 
     /**
@@ -93,18 +117,18 @@ public class Principal extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         p_car_crear = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        t_car_marca = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        t_car_modelo = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        t_car_fabricacion = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
+        t_car_reparacion = new javax.swing.JSpinner();
         jButton3 = new javax.swing.JButton();
         p_car_listar = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabla_carros = new javax.swing.JTable();
         p_car_modificar = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
@@ -391,6 +415,11 @@ public class Principal extends javax.swing.JFrame {
         jLabel14.setText("Costo de reparacion");
 
         jButton3.setText("Crear");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout p_car_crearLayout = new javax.swing.GroupLayout(p_car_crear);
         p_car_crear.setLayout(p_car_crearLayout);
@@ -403,10 +432,10 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel13)
                     .addComponent(jLabel12)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
+                    .addComponent(t_car_marca)
+                    .addComponent(t_car_modelo)
+                    .addComponent(t_car_fabricacion)
+                    .addComponent(t_car_reparacion, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
                 .addGap(44, 44, 44)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(230, Short.MAX_VALUE))
@@ -417,29 +446,52 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(t_car_marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(t_car_modelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(t_car_fabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(p_car_crearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t_car_reparacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
 
         panel_carros.add(p_car_crear, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 6, -1, 333));
 
-        jScrollPane1.setViewportView(jList1);
-
         jLabel5.setText("Lista de Carros");
+
+        tabla_carros.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Marca", "Modelo", "Año de fabricacion", "Costo de reparacion", "Estado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tabla_carros);
 
         javax.swing.GroupLayout p_car_listarLayout = new javax.swing.GroupLayout(p_car_listar);
         p_car_listar.setLayout(p_car_listarLayout);
@@ -448,10 +500,10 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(p_car_listarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(p_car_listarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                     .addGroup(p_car_listarLayout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE))
                 .addContainerGap())
         );
         p_car_listarLayout.setVerticalGroup(
@@ -459,8 +511,8 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(p_car_listarLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -731,6 +783,29 @@ public class Principal extends javax.swing.JFrame {
         cargarempleados();
     }//GEN-LAST:event_jButton1MouseClicked
 
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        String archivo = "./archivos/Carros.car";
+        Admin_Carros emp = new Admin_Carros(archivo);
+        
+        String marca = t_car_marca.getText();
+        String modelo = t_car_modelo.getText();
+        int fabricacion = Integer.parseInt(t_car_fabricacion.getText());
+        String estado = "en espera de entrar a reparación";
+        int reparacion = (int) t_car_reparacion.getValue();
+        
+        emp.cargarArchivo();
+        Carro carro = new Carro(marca, modelo, fabricacion, estado, reparacion);
+        emp.setCarro(carro);
+        emp.escribirArchivo();
+        
+        
+        t_car_marca.setText("");
+        t_car_reparacion.setValue(0);
+        t_car_fabricacion.setText("");
+        t_car_modelo.setText("");
+        cargarcarros();
+    }//GEN-LAST:event_jButton3MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -791,19 +866,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
@@ -820,8 +890,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane panel;
     private javax.swing.JPanel panel_carros;
     private javax.swing.JPanel panel_empleados;
+    private javax.swing.JTextField t_car_fabricacion;
+    private javax.swing.JTextField t_car_marca;
+    private javax.swing.JTextField t_car_modelo;
+    private javax.swing.JSpinner t_car_reparacion;
     private javax.swing.JSpinner t_emp_edad;
     private javax.swing.JTextField t_emp_identidad;
     private javax.swing.JTextField t_emp_nom;
+    private javax.swing.JTable tabla_carros;
     // End of variables declaration//GEN-END:variables
 }
