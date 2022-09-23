@@ -134,7 +134,9 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         DefaultTableModel modelo2 = (DefaultTableModel) tabla_carros2.getModel();
+        DefaultTableModel modelo5 = (DefaultTableModel) tabla_carros2.getModel();
         DefaultComboBoxModel modelo3 = new DefaultComboBoxModel();
+        DefaultComboBoxModel modelo4 = new DefaultComboBoxModel();
         for (int i = 0; i < carros.size(); i++) {
             int id = i+1;
             String marca = carros.get(i).getMarca();
@@ -146,10 +148,15 @@ public class Principal extends javax.swing.JFrame {
                 modelo2.addRow(newrow);
                 modelo3.addElement(id);
             }
+            Object [] newrow = {id,marca};
+            modelo5.addRow(newrow);
+            modelo4.addElement(id);
             
         }
         combo_carro.setModel(modelo3);
         tabla_carros2.setModel(modelo2);
+        combo_carro2.setModel(modelo4);
+        tabla_carros3.setModel(modelo5);
         
     }
 
@@ -202,16 +209,18 @@ public class Principal extends javax.swing.JFrame {
         tabla_carros = new javax.swing.JTable();
         p_car_modificar = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        t_car_marca2 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        t_car_modelo2 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        t_car_fabricacion2 = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        jSpinner3 = new javax.swing.JSpinner();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        t_car_reparacion2 = new javax.swing.JSpinner();
+        combo_carro2 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tabla_carros3 = new javax.swing.JTable();
         panel_simulacion = new javax.swing.JPanel();
         combo_empleado = new javax.swing.JComboBox<>();
         combo_carro = new javax.swing.JComboBox<>();
@@ -224,7 +233,9 @@ public class Principal extends javax.swing.JFrame {
         boton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        panel_reparaciones = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -606,9 +617,39 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel18.setText("Costo de reparacion");
 
-        jLabel4.setText("Elija el carro a modificar");
+        jLabel4.setText("Elija el id del carro a modificar");
 
         jButton4.setText("Modificar");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
+
+        tabla_carros3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Marca"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(tabla_carros3);
 
         javax.swing.GroupLayout p_car_modificarLayout = new javax.swing.GroupLayout(p_car_modificar);
         p_car_modificar.setLayout(p_car_modificarLayout);
@@ -621,16 +662,18 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel17)
                     .addComponent(jLabel16)
                     .addComponent(jLabel15)
-                    .addComponent(jTextField6)
-                    .addComponent(jTextField7)
-                    .addComponent(jTextField8)
-                    .addComponent(jSpinner3, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
+                    .addComponent(t_car_marca2)
+                    .addComponent(t_car_modelo2)
+                    .addComponent(t_car_fabricacion2)
+                    .addComponent(t_car_reparacion2, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
                 .addGap(73, 73, 73)
                 .addGroup(p_car_modificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(combo_carro2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
-                .addContainerGap(153, Short.MAX_VALUE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         p_car_modificarLayout.setVerticalGroup(
             p_car_modificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -641,23 +684,27 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(p_car_modificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(t_car_marca2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combo_carro2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(t_car_modelo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(t_car_fabricacion2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(p_car_modificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t_car_reparacion2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4))
                 .addContainerGap(61, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, p_car_modificarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         panel_carros.add(p_car_modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 6, -1, 333));
@@ -740,8 +787,8 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap(305, Short.MAX_VALUE))
             .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_simulacionLayout.createSequentialGroup()
-                    .addContainerGap(373, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(389, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
         );
         panel_simulacionLayout.setVerticalGroup(
@@ -757,12 +804,12 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
                 .addComponent(boton)
                 .addContainerGap())
             .addGroup(panel_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_simulacionLayout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(7, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(14, Short.MAX_VALUE)))
         );
@@ -777,7 +824,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
+            .addGap(0, 341, Short.MAX_VALUE)
         );
 
         panel.addTab("Pagos", jPanel4);
@@ -790,23 +837,41 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
+            .addGap(0, 341, Short.MAX_VALUE)
         );
 
         panel.addTab("Entregas", jPanel5);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        javax.swing.GroupLayout panel_reparacionesLayout = new javax.swing.GroupLayout(panel_reparaciones);
+        panel_reparaciones.setLayout(panel_reparacionesLayout);
+        panel_reparacionesLayout.setHorizontalGroup(
+            panel_reparacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_reparacionesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
+        panel_reparacionesLayout.setVerticalGroup(
+            panel_reparacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_reparacionesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
         );
 
-        panel.addTab("Reparaciones", jPanel6);
+        panel.addTab("Reparaciones", panel_reparaciones);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1002,6 +1067,31 @@ public class Principal extends javax.swing.JFrame {
         cargarcarros();
     }//GEN-LAST:event_botonActionPerformed
 
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        int id = Integer.parseInt(combo_carro2.getSelectedItem().toString());
+        
+        String marca = t_car_marca2.getText();
+        String modelo = t_car_modelo2.getText();
+        int fabricacion = Integer.parseInt(t_car_fabricacion2.getText());
+        int reparacion = (int) t_car_reparacion2.getValue();
+        
+        Admin_Carros car = new Admin_Carros("./archivos/Carros.car");
+        car.cargarArchivo();
+        ArrayList<Carro> carros = car.getLista();
+        carros.get(id-1).setMarca(marca);
+        carros.get(id-1).setModelo(modelo);
+        carros.get(id-1).setAño(fabricacion);
+        carros.get(id-1).setCosto(reparacion);
+        car.setLista(carros);
+        car.escribirArchivo();
+        
+        t_car_marca2.setText("");
+        t_car_modelo2.setText("");
+        t_car_fabricacion2.setText("");
+        t_car_reparacion2.setValue(0);
+        cargarcarros();
+    }//GEN-LAST:event_jButton4MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1041,6 +1131,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JProgressBar barra;
     private javax.swing.JButton boton;
     private javax.swing.JComboBox<String> combo_carro;
+    private javax.swing.JComboBox<String> combo_carro2;
     private javax.swing.JComboBox<String> combo_empleado;
     private javax.swing.JComboBox<String> combo_empleados;
     private javax.swing.JLabel estado_final;
@@ -1049,7 +1140,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1073,13 +1163,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
     private javax.swing.JPanel p_b_car_crear;
     private javax.swing.JPanel p_b_car_listar;
     private javax.swing.JPanel p_b_car_modificar;
@@ -1093,15 +1181,21 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane panel;
     private javax.swing.JPanel panel_carros;
     private javax.swing.JPanel panel_empleados;
+    private javax.swing.JPanel panel_reparaciones;
     private javax.swing.JPanel panel_simulacion;
     private javax.swing.JTextField t_car_fabricacion;
+    private javax.swing.JTextField t_car_fabricacion2;
     private javax.swing.JTextField t_car_marca;
+    private javax.swing.JTextField t_car_marca2;
     private javax.swing.JTextField t_car_modelo;
+    private javax.swing.JTextField t_car_modelo2;
     private javax.swing.JSpinner t_car_reparacion;
+    private javax.swing.JSpinner t_car_reparacion2;
     private javax.swing.JSpinner t_emp_edad;
     private javax.swing.JTextField t_emp_identidad;
     private javax.swing.JTextField t_emp_nom;
     private javax.swing.JTable tabla_carros;
     private javax.swing.JTable tabla_carros2;
+    private javax.swing.JTable tabla_carros3;
     // End of variables declaration//GEN-END:variables
 }
