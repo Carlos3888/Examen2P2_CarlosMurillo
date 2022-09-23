@@ -40,9 +40,7 @@ public class Principal extends javax.swing.JFrame {
         cargarempleados();
         cargarcarros();
         
-        Hilo hilo = new Hilo(barra, 5000);
         
-        hilo.start();
         
     }
     
@@ -609,6 +607,11 @@ public class Principal extends javax.swing.JFrame {
         panel.addTab("Carros", panel_carros);
 
         jButton5.setText("Reparar");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -902,6 +905,23 @@ public class Principal extends javax.swing.JFrame {
         t_car_modelo.setText("");
         cargarcarros();
     }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        estado_final.setText("");
+        
+        String nombre = combo_empleados.getSelectedItem().toString();
+        
+        Admin_Empleados emp = new Admin_Empleados("./archivos/Empleados/"+nombre+".emp");
+        emp.cargarArchivo();
+        Empleado empleado = emp.getEmpleado();
+        int au_rep = empleado.getReparados();
+        System.out.println(au_rep);
+        
+        
+        Hilo hilo = new Hilo(barra, 5000, au_rep, estado_final, nombre);
+        
+        hilo.start();
+    }//GEN-LAST:event_jButton5MouseClicked
 
     /**
      * @param args the command line arguments
